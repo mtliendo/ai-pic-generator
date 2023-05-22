@@ -10,16 +10,16 @@ import {
 export function request(
 	ctx: Context<CreateAIPicMutationVariables>
 ): DynamoDBPutItemRequest {
-	let id = util.autoId()
-
+	const id = util.autoId()
+	const ownerId = (ctx.identity as AppSyncIdentityCognito).sub
 	ctx.stash.id = id
-
+	ctx.stash.ownerId = ownerId
 	return {
 		operation: 'PutItem',
 		key: util.dynamodb.toMapValues({ id }),
 		attributeValues: util.dynamodb.toMapValues({
 			__typename: 'AIPic',
-			owner: (ctx.identity as AppSyncIdentityCognito).sub,
+			owner: ownerId,
 			createdAt: util.time.nowISO8601(),
 			updatedAt: util.time.nowISO8601(),
 			completionStatus: 'STARTED',
