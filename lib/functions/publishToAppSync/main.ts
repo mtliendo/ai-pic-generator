@@ -1,5 +1,6 @@
 const urlParse = require('url').URL
 const fetch = require('node-fetch')
+const AWS = require('aws-sdk')
 import { DynamoDBStreamEvent } from 'aws-lambda'
 
 //Just copied this over from the GraphQL file

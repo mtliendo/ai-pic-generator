@@ -12,7 +12,7 @@ export function request(ctx: Context) {
 			body: {
 				version:
 					'db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf',
-				input: { prompt: '' },
+				input: { prompt: ctx.args.prompt },
 				webhook: `${ctx.stash.webhookURL}?userId=${ctx.stash.id}`,
 				webhook_events_filter: ['completed'],
 			},

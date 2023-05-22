@@ -26,17 +26,18 @@ const SampleResponse = {
 
 const axios = require('axios')
 const stream = require('stream')
-const AWS = require('aws-sdk')
-const s3 = new AWS.S3()
+const AWSService = require('aws-sdk')
+const s3 = new AWSService.S3()
 
 exports.handler = async (event: any) => {
 	const userId = event.queryStringParameters.userId
 	const body = JSON.parse(event.body)
-
 	if (body.status !== 'succeeded') return
+	console.log(body)
+	console.log(event)
 
 	const url = body.output[0]
-	const bucketName = process.env.BUCKET_NAME
+	const bucketName = process.env.S3_BUCKET_NAME
 	const objectName = `replicate-images/${userId}/${body.id}.png`
 
 	let response = await axios({

@@ -1,3 +1,4 @@
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { FunctionUrlAuthType, Runtime } from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Construct } from 'constructs'
@@ -11,6 +12,7 @@ import path = require('path')
 //This function gets the imageURL and saves the image to S3.
 
 type publishToAppSyncProps = {
+	s3BucketARN: string
 	s3BucketName: string
 }
 
@@ -32,6 +34,14 @@ export const createReplicateWebhookFunction = (
 			},
 		}
 	)
+
+	const allowPutToS3 = new PolicyStatement({
+		actions: ['s3:PutObject'],
+		resources: [`${props.s3BucketARN}/replicate-images/*`],
+		effect: Effect.ALLOW,
+	})
+
+	replicateWebhookFunction.addToRolePolicy(allowPutToS3)
 
 	const fnURL = replicateWebhookFunction.addFunctionUrl({
 		authType: FunctionUrlAuthType.NONE,

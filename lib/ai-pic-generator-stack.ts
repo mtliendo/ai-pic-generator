@@ -38,6 +38,7 @@ export class AiPicGeneratorStack extends cdk.Stack {
 
 		const replicateWebhookFunc = createReplicateWebhookFunction(this, {
 			s3BucketName: AIPicBucket.bucketName,
+			s3BucketARN: AIPicBucket.bucketArn,
 		})
 
 		const appsyncAPI = createAPI(this, {

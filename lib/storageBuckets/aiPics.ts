@@ -32,8 +32,6 @@ export function createAIPicsBucket(
 		}
 	)
 
-	fileStorageBucket.grantPublicAccess('replicate-images/*', 's3:GetObject')
-
 	fileStorageBucket.addEventNotification(
 		s3.EventType.OBJECT_CREATED,
 		new LambdaDestination(props.s3LambdaTrigger),

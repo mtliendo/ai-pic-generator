@@ -1,6 +1,8 @@
+const AWS = require('aws-sdk')
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 exports.handler = async (event: any) => {
+	console.log('the event', event)
 	for (const record of event.Records) {
 		await processRecord(record)
 	}
