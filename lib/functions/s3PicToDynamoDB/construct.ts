@@ -20,12 +20,6 @@ export const createS3ImageToDDBFunc = (
 			AIPIC_TABLE_ARN: props.aiPicsTableArn,
 			REGION: process.env.CDK_DEFAULT_REGION!,
 		},
-		bundling: {
-			externalModules: ['aws-sdk'],
-			nodeModules: ['aws-sdk'],
-			sourceMap: true,
-			minify: false,
-		},
 	})
 
 	return s3ImageToDDBFunc
