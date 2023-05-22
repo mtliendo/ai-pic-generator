@@ -1,3 +1,4 @@
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Construct } from 'constructs'
@@ -21,6 +22,12 @@ export const createS3ImageToDDBFunc = (
 			REGION: process.env.CDK_DEFAULT_REGION!,
 		},
 	})
+	s3ImageToDDBFunc.addToRolePolicy(
+		new PolicyStatement({
+			actions: ['dynamodb:PutItem'],
+			resources: [props.aiPicsTableArn],
+		})
+	)
 
 	return s3ImageToDDBFunc
 }
