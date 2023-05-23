@@ -2,7 +2,7 @@ import { Construct } from 'constructs'
 import * as s3 from 'aws-cdk-lib/aws-s3'
 import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications'
 import { Function } from 'aws-cdk-lib/aws-lambda'
-import { AnyPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam'
+import { RemovalPolicy } from 'aws-cdk-lib'
 
 type CreateAIPicsBucketProps = {
 	appName: string
@@ -17,6 +17,9 @@ export function createAIPicsBucket(
 		scope,
 		`${props.appName}-aiPics-bucket`,
 		{
+			blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+			removalPolicy: RemovalPolicy.DESTROY,
+			autoDeleteObjects: true,
 			cors: [
 				{
 					allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.DELETE],
@@ -33,13 +36,7 @@ export function createAIPicsBucket(
 		}
 	)
 
-	fileStorageBucket.addToResourcePolicy(
-		new PolicyStatement({
-			actions: ['s3:GetObject'],
-			resources: [fileStorageBucket.arnForObjects('replicate-images/*')],
-			principals: [new AnyPrincipal()],
-		})
-	)
+	fileStorageBucket.grantPublicAccess()
 
 	fileStorageBucket.addEventNotification(
 		s3.EventType.OBJECT_CREATED,
