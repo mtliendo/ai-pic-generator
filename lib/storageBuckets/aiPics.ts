@@ -2,6 +2,7 @@ import { Construct } from 'constructs'
 import * as s3 from 'aws-cdk-lib/aws-s3'
 import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications'
 import { Function } from 'aws-cdk-lib/aws-lambda'
+import { AnyPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam'
 
 type CreateAIPicsBucketProps = {
 	appName: string
@@ -30,6 +31,14 @@ export function createAIPicsBucket(
 				},
 			],
 		}
+	)
+
+	fileStorageBucket.addToResourcePolicy(
+		new PolicyStatement({
+			actions: ['s3:GetObject'],
+			resources: [fileStorageBucket.arnForObjects('replicate-images/*')],
+			principals: [new AnyPrincipal()],
+		})
 	)
 
 	fileStorageBucket.addEventNotification(
