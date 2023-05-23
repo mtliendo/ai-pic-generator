@@ -14,6 +14,7 @@ import * as eventsources from 'aws-cdk-lib/aws-lambda-event-sources'
 import { createReplicateWebhookFunction } from './functions/replicateWebhook/construct'
 import { createAIPicsBucket } from './storageBuckets/aiPics'
 import { createS3ImageToDDBFunc } from './functions/s3PicToDynamoDB/construct'
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam'
 
 export class AiPicGeneratorStack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -29,12 +30,15 @@ export class AiPicGeneratorStack extends cdk.Stack {
 
 		const s3ImageToDDBFunc = createS3ImageToDDBFunc(this, {
 			aiPicsTableArn: AIPicsTable.tableArn,
+			aiPicsTableName: AIPicsTable.tableName,
 		})
 
 		const AIPicBucket = createAIPicsBucket(this, {
 			appName: 'AIPicBucket',
 			s3LambdaTrigger: s3ImageToDDBFunc,
 		})
+
+		s3ImageToDDBFunc.grantInvoke(new ServicePrincipal('s3.amazonaws.com'))
 
 		const replicateWebhookFunc = createReplicateWebhookFunction(this, {
 			s3BucketName: AIPicBucket.bucketName,

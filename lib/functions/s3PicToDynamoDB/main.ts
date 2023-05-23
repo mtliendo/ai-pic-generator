@@ -16,26 +16,26 @@ async function processRecord(record: any) {
 	console.log(`Bucket: ${bucket}`)
 	console.log('currentISODate', currentISODate)
 
-	// const params = {
-	// 	TableName: process.env.TABLE_NAME,
-	// 	Key: {
-	// 		bucket: bucket,
-	// 		key: key,
-	// 	},
-	// 	UpdateExpression:
-	// 		'set completionStatus = :completionStatus,  updatedAt = :updatedAt, imgId = :key',
-	// 	ExpressionAttributeValues: {
-	// 		':completionStatus': 'COMPLETED',
-	// 		':updatedAt': currentISODate,
-	// 		':key': key,
-	// 	},
-	// 	ReturnValues: 'UPDATED_NEW',
-	// }
+	const params = {
+		TableName: process.env.AIPIC_TABLE_NAME,
+		Key: {
+			bucket: bucket,
+			key: key,
+		},
+		UpdateExpression:
+			'set completionStatus = :completionStatus,  updatedAt = :updatedAt, imgId = :key',
+		ExpressionAttributeValues: {
+			':completionStatus': 'COMPLETED',
+			':updatedAt': currentISODate,
+			':key': key,
+		},
+		ReturnValues: 'UPDATED_NEW',
+	}
 
-	// try {
-	// 	const data = await dynamoDb.update(params).promise()
-	// 	console.log(`Item updated successfully: ${key}`)
-	// } catch (err) {
-	// 	console.log('Error', err)
-	// }
+	try {
+		const data = await dynamoDb.update(params).promise()
+		console.log(`Item updated successfully: ${key}`)
+	} catch (err) {
+		console.log('Error', err)
+	}
 }

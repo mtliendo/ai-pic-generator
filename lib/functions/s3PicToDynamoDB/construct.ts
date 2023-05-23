@@ -6,6 +6,7 @@ import path = require('path')
 
 type AIPicsTableProps = {
 	aiPicsTableArn: string
+	aiPicsTableName: string
 }
 
 export const createS3ImageToDDBFunc = (
@@ -18,7 +19,7 @@ export const createS3ImageToDDBFunc = (
 		handler: 'handler',
 		entry: path.join(__dirname, `./main.ts`),
 		environment: {
-			AIPIC_TABLE_ARN: props.aiPicsTableArn,
+			AIPIC_TABLE_NAME: props.aiPicsTableName,
 			REGION: process.env.CDK_DEFAULT_REGION!,
 		},
 	})

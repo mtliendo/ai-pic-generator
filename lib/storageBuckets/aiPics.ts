@@ -36,7 +36,7 @@ export function createAIPicsBucket(
 		s3.EventType.OBJECT_CREATED,
 		new LambdaDestination(props.s3LambdaTrigger),
 		{
-			prefix: 'replicate-images/*',
+			prefix: 'replicate-images',
 		}
 	)
 
