@@ -25,7 +25,7 @@ export const createS3ImageToDDBFunc = (
 	})
 	s3ImageToDDBFunc.addToRolePolicy(
 		new PolicyStatement({
-			actions: ['dynamodb:PutItem'],
+			actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'],
 			resources: [props.aiPicsTableArn],
 		})
 	)
