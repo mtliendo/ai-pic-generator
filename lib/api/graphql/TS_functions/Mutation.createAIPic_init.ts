@@ -12,8 +12,7 @@ export function request(
 ): DynamoDBPutItemRequest {
 	const id = util.autoId()
 	const ownerId = (ctx.identity as AppSyncIdentityCognito).sub
-	ctx.stash.id = id
-	ctx.stash.ownerId = ownerId
+	ctx.stash.id = id // passed as a query param to Replicate
 	return {
 		operation: 'PutItem',
 		key: util.dynamodb.toMapValues({ id }),

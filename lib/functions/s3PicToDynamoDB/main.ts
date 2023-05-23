@@ -13,14 +13,14 @@ async function processRecord(record: any) {
 	const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, ' '))
 	const currentISODate = new Date().toISOString()
 	console.log(`Processing record: ${key}`)
+	const dbId = key.split('/')[1]
 	console.log(`Bucket: ${bucket}`)
 	console.log('currentISODate', currentISODate)
 
 	const params = {
 		TableName: process.env.AIPIC_TABLE_NAME,
 		Key: {
-			bucket: bucket,
-			key: key,
+			id: dbId,
 		},
 		UpdateExpression:
 			'set completionStatus = :completionStatus,  updatedAt = :updatedAt, imgId = :key',
