@@ -36,7 +36,7 @@ export function createAIPicsBucket(
 		}
 	)
 
-	fileStorageBucket.grantPublicAccess()
+	https: fileStorageBucket.grantPublicAccess()
 
 	fileStorageBucket.addEventNotification(
 		s3.EventType.OBJECT_CREATED,

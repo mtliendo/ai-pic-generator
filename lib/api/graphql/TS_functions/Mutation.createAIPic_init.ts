@@ -13,6 +13,7 @@ export function request(
 	const id = util.autoId()
 	const ownerId = (ctx.identity as AppSyncIdentityCognito).sub
 	ctx.stash.id = id // passed as a query param to Replicate
+	ctx.stash.dbOwner = ownerId // passed as a query param to Replicate
 	return {
 		operation: 'PutItem',
 		key: util.dynamodb.toMapValues({ id }),

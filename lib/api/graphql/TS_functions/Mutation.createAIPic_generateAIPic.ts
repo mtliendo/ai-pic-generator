@@ -13,7 +13,7 @@ export function request(ctx: Context) {
 				version:
 					'db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf',
 				input: { prompt: ctx.args.prompt },
-				webhook: `${ctx.stash.webhookURL}?dbId=${ctx.stash.id}`,
+				webhook: `${ctx.stash.webhookURL}?dbId=${ctx.stash.id}&dbOwner=${ctx.stash.dbOwner}`,
 				webhook_events_filter: ['completed'],
 			},
 		},

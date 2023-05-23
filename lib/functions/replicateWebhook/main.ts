@@ -30,6 +30,7 @@ const AWSService = require('aws-sdk')
 const s3 = new AWSService.S3()
 
 exports.handler = async (event: any) => {
+	const dbOwner = event.queryStringParameters.dbOwner
 	const dbId = event.queryStringParameters.dbId
 	const body = JSON.parse(event.body)
 	if (body.status !== 'succeeded') return
@@ -38,7 +39,7 @@ exports.handler = async (event: any) => {
 
 	const url = body.output[0]
 	const bucketName = process.env.S3_BUCKET_NAME
-	const objectName = `replicate-images/${dbId}/${body.id}.png`
+	const objectName = `replicate-images/${dbOwner}/${dbId}.png`
 
 	let response = await axios({
 		url,
@@ -50,6 +51,7 @@ exports.handler = async (event: any) => {
 		Bucket: bucketName,
 		Key: objectName,
 		Body: response.data.pipe(pass),
+		ContentType: 'image/png',
 	}
 
 	try {
