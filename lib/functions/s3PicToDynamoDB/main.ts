@@ -14,6 +14,7 @@ async function processRecord(record: any) {
 	const currentISODate = new Date().toISOString()
 	console.log(`Processing record: ${key}`)
 	const dbId = key.split('/')[1]
+	console.log('dbId', dbId)
 	console.log(`Bucket: ${bucket}`)
 	console.log('currentISODate', currentISODate)
 
